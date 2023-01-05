@@ -14,10 +14,10 @@ from tqdm import tqdm
 
 from mapit_postcodes.models import VoronoiRegion, NSULRow
 
-COLUMN_POSTCODE = "pcds"
-COLUMN_E = "gridgb1e"
-COLUMN_N = "gridgb1n"
-COLUMN_UPRN = "uprn"
+COLUMN_POSTCODE = "PCDS"
+COLUMN_E = "GRIDGB1E"
+COLUMN_N = "GRIDGB1N"
+COLUMN_UPRN = "UPRN"
 
 BATCH_SIZE = 1000
 
@@ -198,7 +198,7 @@ class Command(BaseCommand):
                     # Exclude rows where the postcode is missing:
                     if not pc:
                         continue
-                    m = postcode_matcher.search(pc)
+                    m = postcode_matcher.search(pc.strip())
                     if not m:
                         raise Exception(
                             "Couldn't parse postcode:" + pc + "from row" + str(row)

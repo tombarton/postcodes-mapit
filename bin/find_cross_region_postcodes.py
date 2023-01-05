@@ -11,7 +11,7 @@ from django.contrib.gis.gdal import DataSource
 from django.contrib.gis.geos import GEOSGeometry
 import requests
 
-COLUMN_POSTCODE = "pcds"
+COLUMN_POSTCODE = "PCDS"
 
 parser = argparse.ArgumentParser(
     description="Find postcodes that are split across more than one EUR region"

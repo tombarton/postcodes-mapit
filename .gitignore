@@ -1,4 +1,5 @@
 *.pyc
+.DS_Store
 
 /conf/general.yml
 /conf/general.yml.deployed
@@ -11,3 +12,7 @@
 .venv
 .static
 .vagrant
+
+# Data
+data/gb-postcodes/*
+NSUL_DEC_2022

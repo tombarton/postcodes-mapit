@@ -2,6 +2,7 @@ import errno
 from functools import partial
 import json
 from multiprocessing import Pool, cpu_count, set_start_method
+
 import os
 from pathlib import Path
 import re
@@ -16,6 +17,8 @@ from mapit.management.command_utils import fix_invalid_geos_geometry
 from mapit_postcodes.models import VoronoiRegion, NSULRow
 
 from tqdm import tqdm
+
+set_start_method("fork")
 
 region_code_to_name = {
     "EE": "Eastern Euro Region",
@@ -418,7 +421,7 @@ class Command(BaseCommand):
                         f"You said to only process the area {only_single_area} but no outcodes were found for that area"
                     )
 
-            pool = Pool(processes=cpu_count())
+            pool = Pool(processes=cpu_count() - 2)
             for _ in tqdm(
                 pool.imap_unordered(process_outcode, outcodes), total=len(outcodes)
             ):
@@ -458,7 +461,7 @@ class Command(BaseCommand):
                         )
                 print("++++ Example prefixes:", str(prefixes)[:64])
                 specialized_process_function = partial(process_level, postcode_level)
-                pool = Pool(processes=cpu_count())
+                pool = Pool(processes=cpu_count() - 2)
                 for _ in tqdm(
                     pool.imap_unordered(specialized_process_function, prefixes),
                     total=len(prefixes),
@@ -491,7 +494,7 @@ class Command(BaseCommand):
                 )
                 rows = cursor.fetchall()
 
-            pool = Pool(processes=cpu_count())
+            pool = Pool(processes=cpu_count() - 2)
             for _ in tqdm(
                 pool.imap_unordered(process_vertical_street, rows), total=len(rows)
             ):
